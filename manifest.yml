@@ -1,0 +1,10 @@
+applications:
+  - name: em-webhook
+    memory: 128M
+    disk_quota: 1G
+    instances: 1
+    random-route: true
+    buildpacks:
+      - python_buildpack
+    command: python webhook.py
+    health-check-type: port
