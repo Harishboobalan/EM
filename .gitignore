@@ -2,3 +2,4 @@
 service-key.json
 __pycache__/
 .venv/
+events.db

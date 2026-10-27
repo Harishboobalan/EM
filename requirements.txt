@@ -1,1 +1,2 @@
-# webhook.py only uses the Python standard library
+flask==3.1.2
+gunicorn==23.0.0

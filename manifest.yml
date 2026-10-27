@@ -1,10 +1,16 @@
 applications:
   - name: em-webhook
-    memory: 128M
+    memory: 256M
     disk_quota: 1G
     instances: 1
     random-route: true
     buildpacks:
       - python_buildpack
-    command: python webhook.py
-    health-check-type: port
+    # one worker process so the dedup store and the async worker thread are shared
+    command: gunicorn --workers 1 --threads 8 --timeout 120 --bind 0.0.0.0:$PORT receiver:app
+    health-check-type: http
+    health-check-http-endpoint: /
+    env:
+      ASYNC_PROCESSING: "false"
+      # no authentication: CPI calls /dcd/events without credentials (endpoint is open to anyone)
+      REQUIRE_AUTH: "false"
